@@ -189,7 +189,7 @@ missed case (FN) are saved under `notebooks/figures/10c_*`.
 - No direct patient identifiers are present in the processed source file.
 - This project does **not** constitute a medical device under any
   jurisdiction.
-- The published Tableau dashboard inherits the same disclaimers and
+- The published interactive dashboard inherits the same disclaimers and
   links back to this model card.
 - If this workflow were to be applied to real PHI in production:
   data-use agreement, REB/IRB review, access controls on the MySQL

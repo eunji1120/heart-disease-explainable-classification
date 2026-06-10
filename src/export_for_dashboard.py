@@ -1,9 +1,9 @@
-"""Step 11 — Export the dashboard-ready datasets to CSV for Tableau Public.
+"""Step 11 — Export the dashboard-ready datasets to CSV.
 
-Tableau Public cannot connect to a local MySQL instance, so we extract the
-8 datasets that the dashboard needs into UTF-8 CSV files under
-``data/outputs/tableau/``. Each CSV is shaped for one or two specific Tableau
-sheets so the user does not need to wrangle the data inside Tableau.
+The Streamlit dashboard cannot connect to a local MySQL instance once deployed
+to Streamlit Cloud, so we extract the 8 datasets it needs into UTF-8 CSV
+files under ``data/outputs/dashboard/``. Each CSV is shaped for one or two
+specific dashboard sheets so no further data wrangling is needed.
 
 Outputs (all flat, single-sheet CSVs):
 
@@ -32,7 +32,7 @@ from sqlalchemy import text
 
 from src.db import PROJECT_ROOT, get_engine
 
-OUT_DIR = PROJECT_ROOT / "data" / "outputs" / "tableau"
+OUT_DIR = PROJECT_ROOT / "data" / "outputs" / "dashboard"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 

@@ -1,7 +1,7 @@
 # Streamlit Dashboard — Run Locally + Deploy to Streamlit Cloud
 
 Five-page interactive dashboard (Home / Cohort / Performance / Top Risk Factors
-/ Per-Record). Reads from the eight CSVs in `data/outputs/tableau/` — no live
+/ Per-Record). Reads from the eight CSVs in `data/outputs/dashboard/` — no live
 database connection required, so it deploys cleanly to Streamlit Cloud.
 
 ---
@@ -21,7 +21,7 @@ in any browser. The sidebar exposes the five pages.
 If you need to refresh the data after a re-train, rerun the export script:
 
 ```bash
-python -m src.export_for_tableau
+python -m src.export_for_dashboard
 ```
 
 `@st.cache_data` will pick up the new CSVs on the next browser refresh.
@@ -102,5 +102,5 @@ sklearn, shap, plotly). Subsequent commits to `main` auto-redeploy in
 | --- | --- |
 | `ModuleNotFoundError: streamlit` | `pip install -r requirements.txt` inside the venv |
 | Streamlit Cloud build fails on `shap` | Check Python version. Streamlit Cloud picks 3.10/3.11/3.12; `shap` works fine on these. Locally we use 3.9 because of system Python. |
-| The CSVs in `data/outputs/tableau/` look stale | Rerun `python -m src.export_for_tableau` from project root |
+| The CSVs in `data/outputs/dashboard/` look stale | Rerun `python -m src.export_for_dashboard` from project root |
 | Page is slow after editing | Add `@st.cache_data` to any new derived computation; wrap interactive blocks in `@st.fragment` |

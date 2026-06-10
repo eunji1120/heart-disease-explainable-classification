@@ -12,7 +12,7 @@ import pandas as pd
 import streamlit as st
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = PROJECT_ROOT / "data" / "outputs" / "tableau"
+DATA_DIR = PROJECT_ROOT / "data" / "outputs" / "dashboard"
 
 
 def _csv(name: str) -> pd.DataFrame:

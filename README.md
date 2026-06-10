@@ -14,7 +14,6 @@ an interactive Streamlit dashboard for stakeholder review.
 | Model card | [docs/model_card.md](docs/model_card.md) |
 | Data dictionary | [docs/data_dictionary.md](docs/data_dictionary.md) |
 | DQ report | [docs/data_quality_report.md](docs/data_quality_report.md) |
-| Alternative BI build (Tableau) | [docs/tableau_guide.md](docs/tableau_guide.md) |
 
 ---
 
@@ -185,9 +184,9 @@ than a generic ML demo.
 
 → Build, run, and deploy: [docs/streamlit_guide.md](docs/streamlit_guide.md).
 
-*Alternative path:* the same eight CSV exports in
-[data/outputs/tableau/](data/outputs/tableau/) also feed a 5-page Tableau
-Public dashboard — see [docs/tableau_guide.md](docs/tableau_guide.md).
+The dashboard reads from eight CSV exports in
+[data/outputs/dashboard/](data/outputs/dashboard/), regenerated from MySQL
+by `python -m src.export_for_dashboard`.
 
 ## 13. Key Findings
 
@@ -251,14 +250,13 @@ Summarized below; full version in [docs/model_card.md](docs/model_card.md) §10.
 ├── data/
 │   ├── raw/                        — UCI source files
 │   ├── processed/                  — derived artefacts
-│   └── outputs/tableau/            — 8 CSVs that feed both Streamlit and Tableau
+│   └── outputs/dashboard/          — 8 CSVs that feed the Streamlit dashboard
 │
 ├── docs/
 │   ├── data_dictionary.md
 │   ├── data_quality_report.md      — generated from MySQL
 │   ├── model_card.md
-│   ├── streamlit_guide.md          — build + deploy guide for the dashboard
-│   └── tableau_guide.md            — alternative Tableau Public build
+│   └── streamlit_guide.md          — build + deploy guide for the dashboard
 │
 ├── sql/
 │   ├── 01_schema.sql               — 8 tables + 3 BI views
@@ -274,7 +272,7 @@ Summarized below; full version in [docs/model_card.md](docs/model_card.md) §10.
 │   ├── train.py                    — 6-model 10-fold CV trainer
 │   ├── evaluate.py                 — 6 evaluation figures
 │   ├── explain.py                  — SHAP global + patient-level + figures
-│   └── export_for_tableau.py       — MySQL → 8 dashboard CSVs
+│   └── export_for_dashboard.py     — MySQL → 8 dashboard CSVs
 │
 ├── notebooks/figures/              — EDA, evaluation, SHAP PNGs
 │
@@ -314,7 +312,7 @@ python -m src.eda                 # 6 EDA figures
 python -m src.train               # 6 models × 10 folds → MySQL
 python -m src.evaluate            # 6 evaluation figures
 python -m src.explain             # SHAP tables + 8 figures
-python -m src.export_for_tableau  # 8 CSVs for the dashboard
+python -m src.export_for_dashboard  # 8 CSVs for the dashboard
 
 # 5. Launch the dashboard
 streamlit run app.py              # open http://localhost:8501
