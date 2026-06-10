@@ -9,7 +9,7 @@ an interactive Streamlit dashboard for stakeholder review.
 
 | | |
 | --- | --- |
-| **Live dashboard** | _(will be added after Streamlit Cloud is deployed)_ |
+| **Live dashboard** | <https://heart-disease-explainable-classification.streamlit.app/> |
 | Dashboard build / deploy guide | [docs/streamlit_guide.md](docs/streamlit_guide.md) |
 | Model card | [docs/model_card.md](docs/model_card.md) |
 | Data dictionary | [docs/data_dictionary.md](docs/data_dictionary.md) |
