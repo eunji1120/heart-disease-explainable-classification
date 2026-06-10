@@ -16,6 +16,7 @@ venv/
 .DS_Store
 .vscode/
 .idea/
+.claude/
 
 # Data outputs (regeneratable)
 data/processed/*.parquet
