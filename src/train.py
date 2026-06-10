@@ -27,6 +27,7 @@ from typing import Iterable
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, clone
+from sklearn.calibration import CalibratedClassifierCV
 from sklearn.dummy import DummyClassifier
 from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
@@ -50,16 +51,43 @@ THRESHOLD = 0.5
 # Model registry
 # ---------------------------------------------------------------------------
 def _build_models() -> dict[str, BaseEstimator]:
+    """Six classifiers covering: floor baseline, two linear variants (L2/L1),
+    a non-linear ensemble, a gradient-boosted ensemble, and a probability-
+    calibrated GBM. Each is fit inside the same ColumnTransformer pipeline.
+
+    Overfit-guard choices:
+      * `logistic_regression` already L2-regularized (sklearn default C=1.0).
+      * `logistic_regression_l1` uses L1 for explicit feature selection — the
+        penalty itself prevents overfit on small data.
+      * `random_forest` uses `min_samples_leaf=2` to forbid single-row leaves.
+      * `hist_gradient_boosting` uses `early_stopping=True` so training halts
+        once the internal validation loss stops improving.
+      * `hist_gradient_boosting_calibrated` wraps the GBM in
+        `CalibratedClassifierCV` (isotonic, cv=5) — the calibrator itself is
+        a regularizer; main benefit is a sharper Brier score for clinical
+        risk-scoring.
+    """
     return {
         "dummy": DummyClassifier(strategy="most_frequent", random_state=SEED),
         "logistic_regression": LogisticRegression(
-            max_iter=2000, random_state=SEED, solver="lbfgs"
+            max_iter=2000, random_state=SEED, solver="lbfgs",
+        ),
+        "logistic_regression_l1": LogisticRegression(
+            max_iter=2000, random_state=SEED, solver="liblinear",
+            penalty="l1", C=1.0,
         ),
         "random_forest": RandomForestClassifier(
-            n_estimators=300, random_state=SEED, n_jobs=-1
+            n_estimators=300, random_state=SEED, n_jobs=-1,
+            min_samples_leaf=2,
         ),
         "hist_gradient_boosting": HistGradientBoostingClassifier(
-            random_state=SEED, max_iter=200
+            random_state=SEED, max_iter=200, early_stopping=True,
+        ),
+        "hist_gradient_boosting_calibrated": CalibratedClassifierCV(
+            HistGradientBoostingClassifier(
+                random_state=SEED, max_iter=200, early_stopping=True,
+            ),
+            method="isotonic", cv=5,
         ),
     }
 
